@@ -25,7 +25,7 @@ input,select,textarea{font-family:'Manrope',sans-serif;color:#1a2332}
 .nb-logo span{color:#c0392b}
 .nb-links{display:flex;align-items:stretch;flex:1;overflow-x:auto;scrollbar-width:none}
 .nb-links::-webkit-scrollbar{display:none}
-.nav-btn{height:60px;padding:0 12px;border:none;background:none;font-size:12.5px;font-weight:800;color:#0d1f3c;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-3px;white-space:nowrap;transition:.18s}
+.nav-btn{height:60px;padding:0 9px;border:none;background:none;font-size:11.5px;font-weight:800;color:#0d1f3c;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-3px;white-space:nowrap;transition:.18s}
 .nav-btn:hover{color:#c0392b;border-bottom-color:#c0392b}
 .nav-btn.on{color:#c0392b;border-bottom-color:#c0392b}
 .nb-cta{display:flex;gap:8px;padding-left:12px;flex-shrink:0}
@@ -225,10 +225,11 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
     <div class="nb-links">
       <button class="nav-btn on" id="nb-home"    onclick="showPage('home')">🏠 Home</button>
       <button class="nav-btn"    id="nb-buy"     onclick="showPage('buy')">🛒 Buy TMT</button>
-      <button class="nav-btn"    id="nb-guide"   onclick="showPage('guide')">📖 Building Guide</button>
+      <button class="nav-btn"    id="nb-guide"   onclick="showPage('guide')">📖 Bldg Guide</button>
       <button class="nav-btn"    id="nb-calc"    onclick="showPage('calc')">🧮 Calculators</button>
       <button class="nav-btn"    id="nb-channel" onclick="showPage('channel')">🤝 Channel Partners</button>
-      <button class="nav-btn"    id="nb-promo"   onclick="showPage('promo')">🎁 Promotions</button>
+      <button class="nav-btn"    id="nb-promo"   onclick="showPage('promo')">🎁 Offers</button>
+      <button class="nav-btn"    id="nb-promats" onclick="showPage('promats')">📂 Promo Matls</button>
       <button class="nav-btn"    id="nb-reports" onclick="showPage('reports')">📊 Reports</button>
       <button class="nav-btn"    id="nb-compare" onclick="showPage('compare')">⚖️ Compare</button>
       <button class="nav-btn"    id="nb-antifr"  onclick="showPage('antifr')">🛡️ Anti-Fraud</button>
@@ -250,9 +251,10 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
     <div class="chip"    id="chip-buy"     onclick="showPage('buy')">🛒 Buy Direct</div>
     <div class="chip"    id="chip-channel" onclick="showPage('channel')">📍 Locate Dealer</div>
     <div class="chip"    id="chip-calc"    onclick="showPage('calc')">🧮 Calculator</div>
-    <div class="chip"    id="chip-guide"   onclick="showPage('guide')">📖 Building Guide</div>
+    <div class="chip"    id="chip-guide"   onclick="showPage('guide')">📖 Bldg Guide</div>
     <div class="chip"                      onclick="openModal('partner')">🤝 Become Partner</div>
     <div class="chip"    id="chip-promo"   onclick="showPage('promo')">🎁 Offers</div>
+    <div class="chip"    id="chip-promats" onclick="showPage('promats')">📂 Promo Matls</div>
     <div class="chip"    id="chip-reports" onclick="showPage('reports')">📊 Reports</div>
     <div class="chip"    id="chip-antifr"  onclick="showPage('antifr')">🛡️ Verify Genuine</div>
   </div>
@@ -678,6 +680,108 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
   </section>
 </div>
 
+<!-- ===== PROMOTIONAL MATERIALS ===== -->
+<div id="page-promats" class="page">
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="lbl">Promotional Materials</div>
+        <div class="h2">SAIL SeQR Brand Resources</div>
+        <div class="yl-bar"></div>
+      </div>
+
+      <!-- Admin upload notice -->
+      <div id="promats-admin-bar" style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:10px;padding:12px 18px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="font-size:11px;color:#0369a1;font-weight:700">📌 Admin: Add YouTube links, Google Drive PDF links, or image URLs using the form below each section.<br><span style="font-weight:400;color:#0284c7">💡 To add a PDF: Upload to Google Drive → Right-click → Share → "Anyone with link" → Copy link → Paste below.</span></div>
+        <button onclick="togglePromatAdmin()" id="promats-admin-btn" style="background:#0d1f3c;color:#f5d800;border:none;border-radius:6px;padding:7px 16px;font-size:12px;font-weight:800;cursor:pointer">⚙ Manage Content</button>
+      </div>
+
+      <!-- ── BROCHURES ──────────────────────────── -->
+      <div style="font-size:11px;font-weight:900;color:#0d1f3c;letter-spacing:1px;margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid #f5d800">
+        📄 BROCHURES & CATALOGUES
+      </div>
+      <div id="promats-brochures" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:8px"></div>
+      <div id="promats-brochure-admin" style="display:none;background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:10px;padding:16px;margin-bottom:24px">
+        <div style="font-size:12px;font-weight:800;color:#0d1f3c;margin-bottom:10px">Add Brochure / Catalogue</div>
+        <div class="form-row">
+          <div class="ff"><label>Title</label><input id="pb-title" type="text" placeholder="e.g. SAIL SeQR Product Brochure 2026"></div>
+          <div class="ff"><label>Description</label><input id="pb-desc" type="text" placeholder="Short description"></div>
+        </div>
+        <div class="form-row">
+          <div class="ff"><label>PDF Link / Drive URL</label><input id="pb-url" type="url" placeholder="https://drive.google.com/..."></div>
+          <div class="ff"><label>Thumbnail Emoji / Icon</label><input id="pb-icon" type="text" placeholder="📄" maxlength="4" style="font-size:20px;text-align:center"></div>
+        </div>
+        <button onclick="addPromatItem('brochure')" style="background:#0d1f3c;color:#f5d800;border:none;border-radius:7px;padding:9px 20px;font-size:12px;font-weight:800;cursor:pointer">+ Add Brochure</button>
+      </div>
+
+      <!-- ── LEAFLETS & FLYERS ──────────────────── -->
+      <div style="font-size:11px;font-weight:900;color:#0d1f3c;letter-spacing:1px;margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid #f5d800">
+        🗒️ LEAFLETS & FLYERS
+      </div>
+      <div id="promats-leaflets" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:8px"></div>
+      <div id="promats-leaflet-admin" style="display:none;background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:10px;padding:16px;margin-bottom:24px">
+        <div style="font-size:12px;font-weight:800;color:#0d1f3c;margin-bottom:10px">Add Leaflet / Flyer</div>
+        <div class="form-row">
+          <div class="ff"><label>Title</label><input id="pl-title" type="text" placeholder="e.g. SeQR Seismic Safety Leaflet"></div>
+          <div class="ff"><label>Description</label><input id="pl-desc" type="text" placeholder="Short description"></div>
+        </div>
+        <div class="form-row">
+          <div class="ff"><label>PDF / Image URL</label><input id="pl-url" type="url" placeholder="https://..."></div>
+          <div class="ff"><label>Icon</label><input id="pl-icon" type="text" placeholder="🗒️" maxlength="4" style="font-size:20px;text-align:center"></div>
+        </div>
+        <button onclick="addPromatItem('leaflet')" style="background:#0d1f3c;color:#f5d800;border:none;border-radius:7px;padding:9px 20px;font-size:12px;font-weight:800;cursor:pointer">+ Add Leaflet</button>
+      </div>
+
+      <!-- ── VIDEOS / YOUTUBE ───────────────────── -->
+      <div style="font-size:11px;font-weight:900;color:#0d1f3c;letter-spacing:1px;margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid #f5d800">
+        ▶️ VIDEOS & YOUTUBE
+      </div>
+      <div id="promats-videos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-bottom:8px"></div>
+      <div id="promats-video-admin" style="display:none;background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:10px;padding:16px;margin-bottom:24px">
+        <div style="font-size:12px;font-weight:800;color:#0d1f3c;margin-bottom:10px">Add YouTube Video</div>
+        <div class="form-row">
+          <div class="ff"><label>Video Title</label><input id="pv-title" type="text" placeholder="e.g. SAIL SeQR — Why Fe550D?"></div>
+          <div class="ff"><label>YouTube Video ID or Full URL</label><input id="pv-url" type="text" placeholder="dQw4w9WgXcQ  or  https://youtu.be/..."></div>
+        </div>
+        <div class="ff" style="margin-bottom:12px"><label>Description</label><input id="pv-desc" type="text" placeholder="Brief description of video content"></div>
+        <button onclick="addPromatItem('video')" style="background:#c0392b;color:#fff;border:none;border-radius:7px;padding:9px 20px;font-size:12px;font-weight:800;cursor:pointer">▶ Add Video</button>
+      </div>
+
+      <!-- ── BANNERS / IMAGES ───────────────────── -->
+      <div style="font-size:11px;font-weight:900;color:#0d1f3c;letter-spacing:1px;margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid #f5d800">
+        🖼️ BANNERS & PROMOTIONAL IMAGES
+      </div>
+      <div id="promats-banners" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:8px"></div>
+      <div id="promats-banner-admin" style="display:none;background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:10px;padding:16px;margin-bottom:24px">
+        <div style="font-size:12px;font-weight:800;color:#0d1f3c;margin-bottom:10px">Add Banner / Image</div>
+        <div class="form-row">
+          <div class="ff"><label>Title</label><input id="pbn-title" type="text" placeholder="e.g. Diwali Offer Banner 2026"></div>
+          <div class="ff"><label>Image URL</label><input id="pbn-url" type="url" placeholder="https://..."></div>
+        </div>
+        <div class="ff" style="margin-bottom:12px"><label>Caption / Alt text</label><input id="pbn-desc" type="text" placeholder="Short caption"></div>
+        <button onclick="addPromatItem('banner')" style="background:#0d1f3c;color:#f5d800;border:none;border-radius:7px;padding:9px 20px;font-size:12px;font-weight:800;cursor:pointer">+ Add Banner</button>
+      </div>
+
+      <!-- Empty state (shown when no content yet) -->
+      <div id="promats-empty" style="text-align:center;padding:48px 20px;display:none">
+        <div style="font-size:52px;margin-bottom:14px">📂</div>
+        <div style="font-size:16px;font-weight:900;color:#0d1f3c;margin-bottom:8px">No materials uploaded yet</div>
+        <p style="font-size:13px;color:#64748b;max-width:420px;margin:0 auto 20px">Click <strong>Manage Content</strong> above to add brochures, leaflets, YouTube videos and promotional banners.</p>
+      </div>
+
+      <!-- Bottom info strip -->
+      <div style="background:linear-gradient(135deg,#0d1f3c,#1a3a6b);border-radius:12px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:16px">
+        <div>
+          <div style="font-size:13px;font-weight:900;color:#f5d800;margin-bottom:4px">📤 Need to upload a new material?</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.65)">Use Google Drive or YouTube → paste the sharing link above. All materials are stored in your browser and persist across sessions.</div>
+        </div>
+        <button class="btn btn-y" onclick="togglePromatAdmin()">⚙ Manage Content</button>
+      </div>
+
+    </div>
+  </section>
+</div>
+
 <!-- ===== REPORTS ===== -->
 <div id="page-reports" class="page">
   <section class="sec">
@@ -1084,7 +1188,7 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
 // =====================================================
 
 // ── DATA ─────────────────────────────────────────────
-var PAGES = ['home','buy','guide','calc','channel','promo','reports','compare','antifr'];
+var PAGES = ['home','buy','guide','calc','channel','promo','promats','reports','compare','antifr'];
 
 var PRODUCTS = [
   {g:'SeQR Fe 550D',d:8, p:59000,pl:'ISP / BSP'},
@@ -1317,7 +1421,7 @@ function showPage(id) {
   if (nb) nb.classList.add('on');
 
   // Update chips
-  var chips = ['home','buy','channel','calc','guide','promo','reports','antifr'];
+  var chips = ['home','buy','channel','calc','guide','promo','promats','reports','antifr'];
   for (var i = 0; i < chips.length; i++) {
     var ch = document.getElementById('chip-' + chips[i]);
     if (ch) ch.classList.toggle('on', chips[i] === id);
@@ -1331,6 +1435,7 @@ function showPage(id) {
   if (id === 'compare') buildCompare();
   if (id === 'channel') initCPL();
   if (id === 'reports') initReports();
+  if (id === 'promats') initPromats();
 }
 
 function mnAct(btn) {
@@ -2819,6 +2924,206 @@ function genBuildingGuideReport() {
   _pdfFooter(doc, 1);
   doc.save('SAIL-SeQR-Bar-Bending-Schedule-Guide.pdf');
 }
+
+// ══════════════════════════════════════════════════
+// PROMOTIONAL MATERIALS
+// ══════════════════════════════════════════════════
+
+var _proAdminVisible = false;
+
+// Default starter content (shown until admin adds real content)
+var PROMAT_DEFAULTS = {
+  brochures: [
+    { title:'SAIL SeQR TMT Bars — Official Brochure', desc:'Ab Nischint Ho Jayein · Product features, technical specs, chemical & mechanical properties, sizes & contact details', icon:'📄', url:'https://drive.google.com/file/d/1-XZnTaG__SwXuEbc8vFteGR-Ksx-VQZQ/view?usp=drive_link', id:'default-b0' },
+    { title:'SAIL SeQR Product Catalogue 2022', desc:'Complete Fe 550D technical specifications, unique product attributes & plant details', icon:'📋', url:'#', id:'default-b1' },
+    { title:'SeQR Grade Comparison Guide', desc:'Fe 500 vs Fe 500D vs Fe 550D — which to choose?', icon:'📊', url:'#', id:'default-b2' },
+  ],
+  leaflets: [
+    { title:'Seismic Safety Leaflet', desc:'Why SeQR Fe 550D for Seismic Zone IV construction?', icon:'🗒️', url:'#', id:'default-l1' },
+    { title:'Anti-Counterfeit Guide', desc:'How to verify genuine SAIL SeQR bars using QR code', icon:'🛡️', url:'#', id:'default-l2' },
+  ],
+  videos: [],
+  banners: []
+};
+
+var PROMAT_VERSION = '2';  // bump this to clear cached data
+
+function _getPromats() {
+  try {
+    var stored = JSON.parse(localStorage.getItem('seqr_promats') || 'null');
+    var storedVer = localStorage.getItem('seqr_promats_ver') || '1';
+    // If version mismatch, clear old cache and use fresh defaults
+    if (!stored || storedVer !== PROMAT_VERSION) {
+      localStorage.removeItem('seqr_promats');
+      localStorage.setItem('seqr_promats_ver', PROMAT_VERSION);
+      return JSON.parse(JSON.stringify(PROMAT_DEFAULTS));
+    }
+    return stored;
+  } catch(e) { return JSON.parse(JSON.stringify(PROMAT_DEFAULTS)); }
+}
+function _savePromats(data) {
+  try { localStorage.setItem('seqr_promats', JSON.stringify(data)); } catch(e) {}
+}
+
+function initPromats() {
+  renderAllPromats();
+}
+
+function renderAllPromats() {
+  var data = _getPromats();
+  renderPromatSection('brochures', data.brochures, renderBrochureCard);
+  renderPromatSection('leaflets',  data.leaflets,  renderBrochureCard);
+  renderPromatSection('videos',    data.videos,    renderVideoCard);
+  renderPromatSection('banners',   data.banners,   renderBannerCard);
+  // Show empty state if everything is empty
+  var isEmpty = !data.brochures.length && !data.leaflets.length && !data.videos.length && !data.banners.length;
+  var emptyEl = document.getElementById('promats-empty');
+  if (emptyEl) emptyEl.style.display = isEmpty ? 'block' : 'none';
+}
+
+function renderPromatSection(type, items, cardFn) {
+  var container = document.getElementById('promats-' + type);
+  if (!container) return;
+  if (!items || items.length === 0) {
+    container.innerHTML = '<p style="font-size:12px;color:#94a3b8;padding:8px 0 16px">No ' + type + ' added yet.</p>';
+    return;
+  }
+  container.innerHTML = items.map(function(item, i) { return cardFn(item, type, i); }).join('');
+}
+
+function renderBrochureCard(item, type, idx) {
+  var isDefault = (item.id||'').startsWith('default');
+  var deleteBtn = _proAdminVisible && !isDefault
+    ? '<button onclick="deletePromat(\'' + type + '\',' + idx + ')" style="position:absolute;top:8px;right:8px;background:#fee2e2;color:#dc2626;border:none;border-radius:50%;width:22px;height:22px;font-size:12px;font-weight:800;cursor:pointer;line-height:1">×</button>'
+    : '';
+  var hasLink = item.url && item.url !== '#' && item.url.indexOf('PASTE_DRIVE') === -1;
+  var linkAttr = hasLink ? 'href="' + item.url + '" target="_blank"' : 'href="#" onclick="toast(\'Upload this brochure to Google Drive and paste the link — click Manage Content to update.\')"';
+  var btnLabel = hasLink ? '⬇ Download / View' : '🔗 Link Coming Soon';
+  var btnStyle = hasLink
+    ? 'background:#0d1f3c;color:#f5d800'
+    : 'background:#e2e8f0;color:#94a3b8';
+  return '<div style="position:relative;background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:4px">' +
+    deleteBtn +
+    '<div style="font-size:32px;margin-bottom:8px">' + (item.icon||'📄') + '</div>' +
+    '<div style="font-size:13px;font-weight:800;color:#0d1f3c;margin-bottom:4px">' + item.title + '</div>' +
+    '<div style="font-size:11.5px;color:#64748b;line-height:1.55;margin-bottom:14px;flex:1">' + (item.desc||'') + '</div>' +
+    '<a ' + linkAttr + ' style="display:inline-block;' + btnStyle + ';font-size:11px;font-weight:800;padding:7px 14px;border-radius:6px;text-decoration:none;text-align:center">' + btnLabel + '</a>' +
+    '</div>';
+}
+
+function renderVideoCard(item, type, idx) {
+  var deleteBtn = _proAdminVisible
+    ? '<button onclick="deletePromat(\'' + type + '\',' + idx + ')" style="position:absolute;top:8px;right:8px;background:#fee2e2;color:#dc2626;border:none;border-radius:50%;width:22px;height:22px;font-size:12px;font-weight:800;cursor:pointer;line-height:1">×</button>'
+    : '';
+  // Extract YouTube ID from full URL or raw ID
+  var vid = item.url || '';
+  var ytMatch = vid.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+  var ytId = ytMatch ? ytMatch[1] : (vid.length === 11 ? vid : '');
+  var thumbUrl = ytId ? 'https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg' : '';
+  var watchUrl = ytId ? 'https://www.youtube.com/watch?v=' + ytId : (item.url || '#');
+  return '<div style="position:relative;background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)">' +
+    deleteBtn +
+    (thumbUrl
+      ? '<div style="position:relative;background:#000;height:155px;overflow:hidden"><img src="' + thumbUrl + '" style="width:100%;height:155px;object-fit:cover;opacity:.85"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="background:rgba(192,57,43,.9);border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-size:20px">▶</div></div></div>'
+      : '<div style="background:#0d1f3c;height:80px;display:flex;align-items:center;justify-content:center;font-size:36px">▶️</div>'
+    ) +
+    '<div style="padding:14px">' +
+    '<div style="font-size:12.5px;font-weight:800;color:#0d1f3c;margin-bottom:4px">' + item.title + '</div>' +
+    '<div style="font-size:11px;color:#64748b;margin-bottom:10px">' + (item.desc||'') + '</div>' +
+    '<a href="' + watchUrl + '" target="_blank" style="display:inline-block;background:#c0392b;color:#fff;font-size:11px;font-weight:800;padding:6px 14px;border-radius:6px;text-decoration:none">▶ Watch on YouTube</a>' +
+    '</div></div>';
+}
+
+function renderBannerCard(item, type, idx) {
+  var deleteBtn = _proAdminVisible
+    ? '<button onclick="deletePromat(\'' + type + '\',' + idx + ')" style="position:absolute;top:8px;right:8px;background:#fee2e2;color:#dc2626;border:none;border-radius:50%;width:22px;height:22px;font-size:12px;font-weight:800;cursor:pointer;line-height:1">×</button>'
+    : '';
+  return '<div style="position:relative;background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)">' +
+    deleteBtn +
+    (item.url
+      ? '<img src="' + item.url + '" style="width:100%;max-height:160px;object-fit:cover">'
+      : '<div style="background:#f1f5f9;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🖼️</div>'
+    ) +
+    '<div style="padding:10px 14px">' +
+    '<div style="font-size:12px;font-weight:800;color:#0d1f3c">' + item.title + '</div>' +
+    (item.desc ? '<div style="font-size:11px;color:#64748b;margin-top:3px">' + item.desc + '</div>' : '') +
+    '</div></div>';
+}
+
+function togglePromatAdmin() {
+  _proAdminVisible = !_proAdminVisible;
+  var sections = ['brochure','leaflet','video','banner'];
+  sections.forEach(function(s) {
+    var el = document.getElementById('promats-' + s + '-admin');
+    if (el) el.style.display = _proAdminVisible ? 'block' : 'none';
+  });
+  var btn = document.getElementById('promats-admin-btn');
+  if (btn) btn.textContent = _proAdminVisible ? '✕ Close Manager' : '⚙ Manage Content';
+  renderAllPromats();
+}
+
+function addPromatItem(type) {
+  var data = _getPromats();
+  var item = {};
+  if (type === 'brochure') {
+    item = {
+      title: document.getElementById('pb-title').value.trim() || 'Untitled Brochure',
+      desc:  document.getElementById('pb-desc').value.trim(),
+      url:   document.getElementById('pb-url').value.trim(),
+      icon:  document.getElementById('pb-icon').value.trim() || '📄',
+      id:    'b-' + Date.now()
+    };
+    if (!data.brochures) data.brochures = [];
+    data.brochures.push(item);
+    ['pb-title','pb-desc','pb-url','pb-icon'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  } else if (type === 'leaflet') {
+    item = {
+      title: document.getElementById('pl-title').value.trim() || 'Untitled Leaflet',
+      desc:  document.getElementById('pl-desc').value.trim(),
+      url:   document.getElementById('pl-url').value.trim(),
+      icon:  document.getElementById('pl-icon').value.trim() || '🗒️',
+      id:    'l-' + Date.now()
+    };
+    if (!data.leaflets) data.leaflets = [];
+    data.leaflets.push(item);
+    ['pl-title','pl-desc','pl-url','pl-icon'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  } else if (type === 'video') {
+    item = {
+      title: document.getElementById('pv-title').value.trim() || 'Untitled Video',
+      desc:  document.getElementById('pv-desc').value.trim(),
+      url:   document.getElementById('pv-url').value.trim(),
+      id:    'v-' + Date.now()
+    };
+    if (!data.videos) data.videos = [];
+    data.videos.push(item);
+    ['pv-title','pv-desc','pv-url'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  } else if (type === 'banner') {
+    item = {
+      title: document.getElementById('pbn-title').value.trim() || 'Untitled Banner',
+      desc:  document.getElementById('pbn-desc').value.trim(),
+      url:   document.getElementById('pbn-url').value.trim(),
+      id:    'bn-' + Date.now()
+    };
+    if (!data.banners) data.banners = [];
+    data.banners.push(item);
+    ['pbn-title','pbn-url','pbn-desc'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  }
+  _savePromats(data);
+  renderAllPromats();
+  toast('✅ ' + type.charAt(0).toUpperCase() + type.slice(1) + ' added!');
+}
+
+function deletePromat(type, idx) {
+  if (!confirm('Remove this item?')) return;
+  var data = _getPromats();
+  var key = type === 'brochure' ? 'brochures' : type === 'leaflet' ? 'leaflets' : type === 'video' ? 'videos' : 'banners';
+  data[key].splice(idx, 1);
+  _savePromats(data);
+  renderAllPromats();
+  toast('Item removed.');
+}
+
+
 
 </script>
 </body>
