@@ -411,7 +411,7 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
 <div id="page-buy" class="page">
   <section class="sec">
     <div class="wrap">
-      <div class="sec-head"><div class="lbl">Online Store</div><div class="h2">Buy SAIL SeQR TMT — May 2026 MRRP</div><p class="sub">SeQR Fe 550D · Per Piece Price (Incl. GST) · 12 Metre Standard Length · Location-wise MRRP</p></div>
+      <div class="sec-head"><div class="lbl">Online Store</div><div class="h2">Buy SAIL SeQR TMT — August 2026 MRRP</div><p class="sub">SeQR Fe 550D · Per Piece Price (Incl. GST) · 12 Metre Standard Length · Location-wise MRRP</p></div>
 
       <!-- Location Selector -->
       <div style="background:#fffde7;border:1.5px solid #f5d800;border-radius:10px;padding:18px 20px;margin-bottom:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
@@ -420,21 +420,33 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
           <option value="">-- Choose Location --</option>
           <optgroup label="West Bengal">
             <option value="Kolkata">Kolkata</option>
+            <option value="Howrah">Howrah</option>
+            <option value="Hooghly">Hooghly</option>
+            <option value="Nadia">Nadia</option>
             <option value="Durgapur">Durgapur</option>
+            <option value="Asansol">Asansol</option>
             <option value="Murshidabad">Murshidabad</option>
             <option value="Midnapore">Midnapore</option>
             <option value="Darjeeling">Darjeeling</option>
             <option value="Jalpaiguri">Jalpaiguri</option>
           </optgroup>
-          <optgroup label="Bihar / Jharkhand">
+          <optgroup label="Bihar">
             <option value="Patna">Patna</option>
             <option value="Muzaffarpur">Muzaffarpur</option>
             <option value="Bhagalpur">Bhagalpur</option>
             <option value="Rohtas">Rohtas</option>
-            <option value="Ranchi">Ranchi</option>
           </optgroup>
-          <optgroup label="Odisha / Jharkhand">
+          <optgroup label="Jharkhand">
+            <option value="Ranchi">Ranchi</option>
+            <option value="Bokaro">Bokaro</option>
+            <option value="Dhanbad">Dhanbad</option>
+          </optgroup>
+          <optgroup label="Odisha">
             <option value="Cuttack">Cuttack</option>
+            <option value="Berhampur">Berhampur</option>
+            <option value="Bhubaneswar">Bhubaneswar</option>
+            <option value="Rourkela">Rourkela</option>
+            <option value="Sundargarh">Sundargarh</option>
           </optgroup>
           <optgroup label="Assam (Guwahati Cluster)">
             <option value="Guwahati (Assam Districts)">Guwahati — Assam Districts</option>
@@ -480,7 +492,7 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
           </table>
         </div>
         <div style="margin-top:14px;background:#fffde7;border-radius:8px;padding:13px 16px;font-size:12px;color:#64748b;line-height:1.7">
-          <strong style="color:#0d1f3c">📌 Notes:</strong> Prices are MRRP (Maximum Retail Price) inclusive of GST @18% · Valid for May 2026 · Standard length: 12 metres per piece · Prices are for stockyard sales · Actual billing price may vary as per applicable discounts &amp; schemes
+          <strong style="color:#0d1f3c">📌 Notes:</strong> Prices are MRRP (Maximum Retail Price) inclusive of GST @18% · Valid for August 2026 · Standard length: 12 metres per piece · Prices are for stockyard sales · Actual billing price may vary as per applicable discounts &amp; schemes
         </div>
       </div>
 
@@ -3279,7 +3291,7 @@ function renderCPL(step) {
           '</div></div>';
       }
       html += '</div>';
-      html += '<p style="font-size:12px;color:#94a3b8;margin-top:14px;text-align:center">Data as of May 2026. Call 1800-11-7475 to verify current dealer status.</p>';
+      html += '<p style="font-size:12px;color:#94a3b8;margin-top:14px;text-align:center">Data as of August 2026. Call 1800-11-7475 to verify current dealer status.</p>';
 
     } else if (cplType !== 'distributor') {
       html += '<div style="background:#fffde7;border:1.5px solid #e2e8f0;border-radius:10px;padding:24px;text-align:center">' +
@@ -4069,27 +4081,37 @@ buildProds();
 
 // ── LOCATION-WISE PRICING ──
 var PRICE_DATA = {
-  'Kolkata': [416, 632, 898, 1594, 2492, 3895, 6367],
-  'Durgapur': [413, 632, 898, 1594, 2492, 3895, 6367],
-  'Murshidabad': [413, 632, 898, 1594, 2492, 3895, 6367],
-  'Midnapore': [416, 632, 898, 1594, 2492, 3895, 6367],
-  'Darjeeling': [416, 632, 898, 1594, 2492, 3895, 6367],
-  'Jalpaiguri': [416, 632, 898, 1594, 2492, 3895, 6367],
-  'Patna': [416, 632, 898, 1594, 2492, 3895, 6367],
-  'Muzaffarpur': [416, 632, 898, 1594, 2492, 3895, 6367],
-  'Bhagalpur': [416, 632, 898, 1594, 2492, 3895, 6367],
-  'Rohtas': [417, 632, 898, 1594, 2492, 3895, 6367],
-  'Ranchi': [417, 632, 898, 1594, 2492, 3895, 6367],
-  'Cuttack': [415, 629, 894, 1587, 2481, 3877, 6338],
-  'Guwahati (Assam Districts)': [425, 633, 900, 1598, 2498, 3903, 6381],
-  'Guwahati (Meghalaya)': [424, 632, 898, 1594, 2492, 3895, 6367],
-  'Guwahati (Nagaland)': [432, 644, 915, 1624, 2539, 3968, 6487],
-  'Silchar (Assam Districts)': [425, 633, 900, 1598, 2498, 3903, 6381],
-  'Silchar (Tripura)': [435, 648, 921, 1635, 2556, 3994, 6530],
-  'Silchar (Mizoram)': [424, 632, 898, 1594, 2492, 3895, 6367],
-  'Silchar (Manipur)': [452, 675, 960, 1704, 2664, 4164, 6806],
-  'Upper Assam (Assam Districts)': [426, 633, 900, 1598, 2498, 3903, 6381],
-  'Upper Assam (Arunachal Pradesh)': [430, 640, 909, 1614, 2523, 3942, 6445],
+  'Kolkata': [387, 590, 833, 1482, 2317, 3611, 5906],
+  'Durgapur': [387, 590, 833, 1482, 2317, 3611, 5906],
+  'Murshidabad': [387, 590, 833, 1482, 2317, 3611, 5906],
+  'Midnapore': [387, 590, 833, 1482, 2317, 3611, 5906],
+  'Darjeeling': [387, 590, 833, 1482, 2317, 3611, 5906],
+  'Jalpaiguri': [387, 590, 833, 1482, 2317, 3611, 5906],
+  'Howrah': [387, 590, 833, 1482, 2317, 3611, null],
+  'Nadia': [387, 590, 833, 1482, 2317, 3611, null],
+  'Hooghly': [387, 590, 833, 1482, 2317, 3611, 5906],
+  'Asansol': [387, 590, 833, 1482, 2317, 3611, 5906],
+  'Patna': [387, 590, 833, 1482, 2317, 3612, 5906],
+  'Muzaffarpur': [387, 590, 833, 1482, 2317, 3612, 5906],
+  'Bhagalpur': [387, 590, 833, 1482, 2317, 3612, 5906],
+  'Rohtas': [387, 590, 833, 1482, 2317, 3612, 5906],
+  'Ranchi': [387, 590, 833, 1482, 2317, 3612, 5906],
+  'Bokaro': [387, 590, 833, 1482, 2317, 3612, null],
+  'Dhanbad': [387, 590, 833, 1482, 2317, 3612, null],
+  'Cuttack': [385, 587, 829, 1476, 2307, 3596, null],
+  'Berhampur': [385, 587, 829, 1476, 2307, 3596, null],
+  'Bhubaneswar': [385, 587, 829, 1476, 2307, 3596, null],
+  'Rourkela': [385, 587, 829, 1476, 2307, 3596, null],
+  'Sundargarh': [385, 587, 829, 1476, 2307, 3596, null],
+  'Guwahati (Assam Districts)': [389, 592, 836, 1487, 2324, 3623, 5927],
+  'Guwahati (Meghalaya)': [389, 592, 833, 1483, 2318, 3613, 5906],
+  'Guwahati (Nagaland)': [396, 604, 850, 1512, 2364, 3685, 6026],
+  'Silchar (Assam Districts)': [389, 592, 836, 1487, 2324, 3623, 5927],
+  'Silchar (Tripura)': [398, 607, 857, 1524, 2383, 3715, 6076],
+  'Silchar (Mizoram)': [388, 591, 834, 1484, 2319, 3615, 5913],
+  'Silchar (Manipur)': [415, 633, 896, 1594, 2491, 3883, 6353],
+  'Upper Assam (Assam Districts)': [389, 592, 836, 1487, 2324, 3623, 5927],
+  'Upper Assam (Arunachal Pradesh)': [392, 598, 844, 1502, 2348, 3660, 5984],
 };
 
 var SIZES_LIST = [8, 10, 12, 16, 20, 25, 32];
@@ -4108,7 +4130,7 @@ function onLocChange(loc) {
   }
   if (prompt) prompt.style.display = "none";
   if (section) section.style.display = "block";
-  if (badge) { badge.textContent = "May 2026 MRRP — " + loc; badge.style.display = "inline-block"; }
+  if (badge) { badge.textContent = "August 2026 MRRP — " + loc; badge.style.display = "inline-block"; }
   renderPriceTable(loc);
 }
 
