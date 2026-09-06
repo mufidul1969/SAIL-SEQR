@@ -1076,7 +1076,7 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
     <div class="modal-body" style="max-height:80vh;overflow-y:auto;padding-right:4px">
 
       <!-- Dealer Info Banner -->
-      <div id="enq-dealer-banner" style="background:linear-gradient(135deg,#0d1f3c,#1a3a6b);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+      <div id="enq-dealer-banner" style="background:linear-gradient(135deg,#0d1f3c,#1a3a6b);border-radius:10px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
         <div>
           <div style="font-size:10px;font-weight:800;color:#f5d800;letter-spacing:1px;margin-bottom:4px">SENDING ENQUIRY TO</div>
           <div id="enq-dlr-name" style="font-size:15px;font-weight:900;color:#fff"></div>
@@ -1087,6 +1087,14 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
           <div id="enq-dlr-email-display" style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px"></div>
           <div id="enq-dist-display" style="font-size:10px;color:rgba(255,255,255,.4);margin-top:3px"></div>
         </div>
+      </div>
+
+      <!-- Nearest Dealer Info Strip (shown for Buy Direct) -->
+      <div id="enq-nearest-strip" style="display:none;background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#166534">
+        📍 <strong>Nearest Authorised Dealer:</strong> <span id="enq-nearest-name"></span> &nbsp;·&nbsp;
+        <span id="enq-nearest-district"></span> &nbsp;·&nbsp;
+        📞 <span id="enq-nearest-phone"></span>
+        <div style="font-size:11px;color:#4ade80;margin-top:3px">Your enquiry will be routed to this dealer + distributor + RMO automatically on submission.</div>
       </div>
 
       <!-- SECTION A: Customer Details -->
@@ -3843,7 +3851,7 @@ var _rebarRows = 0;
 // Called from dealer card Enquire button: openDealerEnquiry(index)
 // ── Buy TMT page: Enquire button opens form pre-filled with size/price ──
 function openBuyEnquiry(size, price, plant, location) {
-  // Reset rebar table and pre-fill with the selected size
+  // Reset
   _enqDealerObj = null;
   _rebarRows = 0;
   var tbody = document.getElementById('rebar-rows');
@@ -3859,19 +3867,38 @@ function openBuyEnquiry(size, price, plant, location) {
     }
   }, 50);
 
-  // Update dealer banner to show "Direct from SAIL"
+  // Store size/price/location for later use after PIN entry
+  window._buyEnqContext = { size: size, price: price, plant: plant, location: location };
+
+  // Update dealer banner — waiting for PIN
   var nm   = document.getElementById('enq-dlr-name');
   var addr = document.getElementById('enq-dlr-addr');
   var ph   = document.getElementById('enq-dlr-phone-display');
   var em   = document.getElementById('enq-dlr-email-display');
   var dist = document.getElementById('enq-dist-display');
   var badge= document.getElementById('enq-dealer-badge');
-  if (nm)    nm.textContent   = 'SAIL SeQR TMT — Direct Enquiry';
-  if (addr)  addr.textContent = 'Location: ' + (location || '') + (plant ? '  ·  Plant: ' + plant : '');
-  if (ph)    ph.textContent   = '📞 1800-11-7475 (Toll Free)';
-  if (em)    em.textContent   = '✉ ' + ENQUIRY_EMAIL;
-  if (dist)  dist.textContent = 'MRRP: Rs. ' + fmt(price) + '/pc for ' + size + 'mm';
+  if (nm)   nm.textContent   = 'SAIL SeQR TMT — Direct Enquiry';
+  if (addr) addr.textContent = 'Location: ' + (location || '') + (plant ? '  ·  Plant: ' + plant : '');
+  if (ph)   ph.textContent   = '📞 1800-11-7475 (Toll Free)';
+  if (em)   em.textContent   = '✉ ' + ENQUIRY_EMAIL;
+  if (dist) dist.textContent = 'MRRP: Rs. ' + fmt(price) + '/pc for ' + size + 'mm';
   if (badge) badge.textContent = size + 'mm · SeQR Fe 550D · incl. GST';
+
+  // Show PIN prompt strip
+  var strip = document.getElementById('enq-nearest-strip');
+  if (strip) {
+    strip.style.display = 'block';
+    strip.innerHTML =
+      '<div style="font-size:12px;font-weight:800;color:#0369a1;margin-bottom:8px">📍 Find Your Nearest Authorised Dealer</div>' +
+      '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">' +
+      '<input id="enq-pin-lookup" type="tel" maxlength="6" placeholder="Enter your 6-digit PIN code" ' +
+      'style="border:2px solid #0369a1;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;width:200px;color:#0d1f3c" ' +
+      'oninput="if(this.value.length===6) findDealerByPin(this.value)">' +
+      '<button onclick="findDealerByPin(document.getElementById(\'enq-pin-lookup\').value)" ' +
+      'style="background:#0d1f3c;color:#f5d800;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:800;cursor:pointer">Find Dealer →</button>' +
+      '</div>' +
+      '<div id="enq-pin-result" style="margin-top:10px"></div>';
+  }
 
   // Clear customer fields
   ['enq-name','enq-mobile','enq-address','enq-city','enq-pin','enq-msg'].forEach(function(id){
@@ -3886,6 +3913,135 @@ function openBuyEnquiry(size, price, plant, location) {
   if(btn){btn.disabled=false; btn.textContent='📤 Send Enquiry →';}
 
   openModal('enquiry');
+}
+
+// Find dealer by PIN code — searches ALL clusters
+function findDealerByPin(pin) {
+  var result = document.getElementById('enq-pin-result');
+  if (!result) return;
+  pin = (pin || '').trim();
+  if (!/^\d{6}$/.test(pin)) {
+    result.innerHTML = '<span style="color:#dc2626;font-size:12px">⚠ Please enter a valid 6-digit PIN code.</span>';
+    return;
+  }
+
+  // Search all clusters in DEALER_DATA
+  var matches = [];
+  var clusterKeys = Object.keys(DEALER_DATA);
+  for (var c = 0; c < clusterKeys.length; c++) {
+    var cluster = clusterKeys[c];
+    var dealers = DEALER_DATA[cluster] || [];
+    for (var d = 0; d < dealers.length; d++) {
+      if ((dealers[d].pin || '').trim() === pin) {
+        matches.push({ dealer: dealers[d], cluster: cluster });
+      }
+    }
+  }
+
+  if (matches.length === 0) {
+    // Try nearby PINs (same first 3 digits = same postal division)
+    var prefix = pin.substring(0, 3);
+    for (var c = 0; c < clusterKeys.length; c++) {
+      var cluster = clusterKeys[c];
+      var dealers = DEALER_DATA[cluster] || [];
+      for (var d = 0; d < dealers.length; d++) {
+        var dpin = (dealers[d].pin || '').trim();
+        if (dpin.startsWith(prefix)) {
+          matches.push({ dealer: dealers[d], cluster: cluster });
+        }
+      }
+    }
+    if (matches.length > 0) {
+      result.innerHTML = '<div style="font-size:11px;color:#92400e;margin-bottom:8px">⚠ No dealer found for PIN ' + pin + '. Showing nearest dealers in the same area:</div>' + _renderDealerOptions(matches.slice(0, 5), pin);
+    } else {
+      result.innerHTML =
+        '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 12px;font-size:12px;color:#dc2626">' +
+        '❌ No authorised dealer found near PIN ' + pin + '.<br>' +
+        '<span style="font-weight:800">Call Toll Free: 1800-11-7475</span> to find your nearest dealer.' +
+        '</div>';
+    }
+    return;
+  }
+
+  if (matches.length === 1) {
+    // Auto-select single match
+    _selectDealerForEnquiry(matches[0].dealer, matches[0].cluster);
+  } else {
+    // Show list to choose from
+    result.innerHTML = '<div style="font-size:11px;color:#166534;font-weight:700;margin-bottom:8px">✅ ' + matches.length + ' authorised dealer(s) found near PIN ' + pin + '. Select one:</div>' + _renderDealerOptions(matches, pin);
+  }
+}
+
+function _renderDealerOptions(matches, pin) {
+  window._dealerMatches = matches;
+  return matches.map(function(m, i) {
+    return '<div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:8px;padding:10px 12px;margin-bottom:8px;cursor:pointer" ' +
+      'onclick="_selectDealerForEnquiry(window._dealerMatches[' + i + '].dealer, window._dealerMatches[' + i + '].cluster)">' +
+      '<div style="font-size:12.5px;font-weight:800;color:#0d1f3c">' + m.dealer.name + '</div>' +
+      '<div style="font-size:11px;color:#64748b;margin-top:2px">' + m.dealer.address + ' — PIN ' + m.dealer.pin + '</div>' +
+      '<div style="font-size:11px;color:#16a34a;margin-top:3px;font-weight:700">📞 ' + m.dealer.phone + (m.dealer.district ? '  ·  ' + m.dealer.district : '') + '</div>' +
+      '<div style="font-size:10px;color:#0891b2;margin-top:3px">Tap to select this dealer →</div>' +
+      '</div>';
+  }).join('');
+}
+
+function _selectDealerForEnquiry(dealer, cluster) {
+  _enqDealerObj = dealer;
+  cplCluster = cluster;
+
+  // Update banner
+  var nm   = document.getElementById('enq-dlr-name');
+  var addr = document.getElementById('enq-dlr-addr');
+  var ph   = document.getElementById('enq-dlr-phone-display');
+  var em   = document.getElementById('enq-dlr-email-display');
+  var dist = document.getElementById('enq-dist-display');
+  if (nm)   nm.textContent   = dealer.name + ' — Authorised Dealer';
+  if (addr) addr.textContent = dealer.address + ', ' + dealer.district + ' — PIN ' + dealer.pin;
+  if (ph)   ph.textContent   = '📞 ' + dealer.phone;
+  if (em)   em.textContent   = dealer.email ? '✉ ' + dealer.email : '';
+  var ctx = window._buyEnqContext || {};
+  if (dist) dist.textContent = ctx.price ? 'MRRP: Rs. ' + fmt(ctx.price) + '/pc for ' + ctx.size + 'mm' : '';
+
+  // Update strip to show confirmed dealer
+  var strip = document.getElementById('enq-nearest-strip');
+  if (strip) {
+    strip.style.background = '#f0fdf4';
+    strip.innerHTML =
+      '<div style="font-size:12px;font-weight:800;color:#166534;margin-bottom:4px">✅ Dealer Selected — Enquiry will be sent to:</div>' +
+      '<div style="font-size:13px;font-weight:900;color:#0d1f3c">' + dealer.name + '</div>' +
+      '<div style="font-size:11px;color:#64748b">' + dealer.address + ' — PIN ' + dealer.pin + '</div>' +
+      '<div style="font-size:12px;font-weight:700;color:#16a34a;margin-top:4px">📞 ' + dealer.phone + '</div>' +
+      '<div style="font-size:10px;color:#0891b2;margin-top:5px">Enquiry will also go to Distributor + RMO · <a href="#" onclick="findDealerByPin(\'\');return false;" style="color:#0891b2">Change dealer</a></div>';
+  }
+
+  // Auto-fill PIN field in customer details
+  var pinField = document.getElementById('enq-pin');
+  if (pinField && !pinField.value) pinField.value = dealer.pin;
+
+  toast('✅ Dealer selected: ' + dealer.name);
+}
+
+// Find nearest dealer for a given location from DEALER_DATA
+function _findNearestDealer(location) {
+  if (!location) return null;
+  var locUpper = location.toUpperCase();
+  var locationToCluster = {
+    'DARJEELING':'DARJEELING','JALPAIGURI':'JALPAIGURI','SILIGURI':'DARJEELING',
+    'KOLKATA':'KOLKATA','HOWRAH':'HOWRAH','HOOGHLY':'HOOGHLY',
+    'DURGAPUR':'DURGAPUR','ASANSOL':'DURGAPUR','MIDNAPORE':'MIDNAPORE',
+    'MURSHIDABAD':'MURSHIDABAD','NADIA':'NADIA',
+    'PATNA':'PATNA','MUZAFFARPUR':'MUZAFFARPUR','BHAGALPUR':'BHAGALPUR',
+    'ROHTAS':'ROHTAS','RANCHI':'RANCHI','BOKARO':'BOKARO','DHANBAD':'BOKARO',
+    'CUTTACK':'CUTTACK','BERHAMPUR':'BERHAMPUR','BHUBANESWAR':'CUTTACK',
+    'ROURKELA':'SUNDARGARH','SUNDARGARH':'SUNDARGARH',
+    'GUWAHATI (ASSAM DISTRICTS)':'GUWAHATI','GUWAHATI (MEGHALAYA)':'GUWAHATI',
+    'SILCHAR (ASSAM DISTRICTS)':'SILCHAR','UPPER ASSAM (ASSAM DISTRICTS)':'UPPER ASSAM',
+  };
+  var clusterKey = locationToCluster[locUpper] || locUpper;
+  cplCluster = clusterKey;
+  var dealers = DEALER_DATA[clusterKey];
+  if (!dealers || dealers.length === 0) return null;
+  return dealers[0];
 }
 
 function openDealerEnquiry(idx) {
@@ -3930,6 +4086,10 @@ function openDealerEnquiry(idx) {
   var err = document.getElementById('enq-err'); if(err){err.style.display='none'; err.textContent='';}
   var btn = document.getElementById('enq-submit-btn'); if(btn){btn.disabled=false; btn.textContent='📤 Send Enquiry to Dealer →';}
 
+  // Hide nearest dealer strip for direct dealer enquiries
+  var ns = document.getElementById('enq-nearest-strip');
+  if (ns) ns.style.display = 'none';
+
   // Initialise rebar table with 3 blank rows
   _rebarRows = 0;
   var tbody = document.getElementById('rebar-rows');
@@ -3963,7 +4123,7 @@ function addRebarRow() {
   var rowId = 'rr-' + _rebarRows;
   var sizes = [8,10,12,16,20,25,28,32];
   var sizeOpts = sizes.map(function(s){ return '<option value="'+s+'">'+s+'mm</option>'; }).join('');
-  var forms = ['Straight (Standard 12m)','Straight (Custom cut)','U-Stirrup','L-Bend','Rectangular Stirrup','Circular Ring','Custom Bent'];
+  var forms = ['Straight (Standard 12m)','Straight (Custom cut)','U-Stirrup','U-Shaped Bent','L-Bend','Rectangular Stirrup','Circular Ring','Custom Bent'];
   var formOpts = forms.map(function(f){ return '<option>'+f+'</option>'; }).join('');
   var n = _rebarRows;
   var tr = document.createElement('tr');
