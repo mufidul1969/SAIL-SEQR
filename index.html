@@ -4005,6 +4005,40 @@ function _collectRebarRows() {
   return rows;
 }
 
+
+// ══════════════════════════════════════════════════
+// CLUSTER CONTACT DATA — Distributor + RMO
+// ══════════════════════════════════════════════════
+var CLUSTER_CONTACTS = {
+  'DARJEELING': {
+    dist: { name:'Durga Iron Stores', person:'Hiralal Agarwal', phone:'9832021174', email:'sales@durgairon.com' },
+    rmo:  { name:'M I Barbhuiya',     phone:'7002702698',        email:'mib@sail.in' }
+  },
+  'JALPAIGURI': {
+    dist: { name:'Durga Iron Stores', person:'Hiralal Agarwal', phone:'9832021174', email:'sales@durgairon.com' },
+    rmo:  { name:'M I Barbhuiya',     phone:'7002702698',        email:'mib@sail.in' }
+  },
+  // Add other clusters below as data is received:
+  // 'KOLKATA':     { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'PATNA':       { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'RANCHI':      { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'GUWAHATI':    { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'SILCHAR':     { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'UPPER ASSAM': { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'CUTTACK':     { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'BERHAMPUR':   { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'MUZAFFARPUR': { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'BHAGALPUR':   { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'ROHTAS':      { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'HOOGHLY':     { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+  // 'HOWRAH':      { dist:{name:'',person:'',phone:'',email:''}, rmo:{name:'',phone:'',email:''} },
+};
+
+function _getClusterContacts() {
+  var clusterKey = (cplCluster || '').toUpperCase();
+  return CLUSTER_CONTACTS[clusterKey] || null;
+}
+
 function submitDealerEnquiry() {
   var name    = (document.getElementById('enq-name').value    || '').trim();
   var mobile  = (document.getElementById('enq-mobile').value  || '').trim();
@@ -4067,41 +4101,69 @@ function submitDealerEnquiry() {
 
   btn.disabled = true; btn.textContent = 'Sending…';
 
-  // ─── 1. WhatsApp to Dealer (only if dealer enquiry with phone) ──
+  var contacts = _getClusterContacts();
+  var dist = contacts ? contacts.dist : null;
+  var rmo  = contacts ? contacts.rmo  : null;
+
+  // Build short summary for WhatsApp
+  var waSummary =
+    '*SAIL SeQR Enquiry [' + enqId + ']*\n\n' +
+    '*Customer :* ' + name + '  📞 ' + mobile + '\n' +
+    '*Address  :* ' + fullAddr + '\n' +
+    '*Project  :* ' + (project||'—') + '\n\n' +
+    '*Rebar Requirement (SeQR Fe 550D):*\n' + rebarText +
+    '\n*Delivery :* ' + (delivery||'—') + (reqby ? '  |  By: ' + reqby : '') +
+    (notes ? '\n*Notes    :* ' + notes : '') +
+    '\n\n_SAIL SeQR · BDO Siliguri · sailsuraksha.com_';
+
+  var waForDealer = waSummary +
+    '\n\n_(Sent to Dealer, Distributor & RMO)_';
+  var waForDist = '*📦 New Enquiry — ' + (d.name||'Direct') + ' [' + (d.district||cplCluster) + ']*\n\n' + waSummary;
+  var waForRMO  = '*📊 RMO Alert — Dealer Enquiry [' + enqId + ']*\n' +
+    'Cluster : ' + (cplCluster||'—') + '  |  Dealer : ' + (d.name||'Direct') + '\n' +
+    'Distributor : ' + (dist ? dist.name : '—') + '\n\n' + waSummary;
+
+  // ─── 1. WhatsApp → DEALER ────────────────────────────
   var waNum = d.phone ? d.phone.replace(/\D/g,'') : '';
   if (waNum && waNum.length >= 10) {
-    var waMsg = '*SAIL SeQR Enquiry [' + enqId + ']*\n\n' +
-      '*Customer:* ' + name + '  📞 ' + mobile + '\n' +
-      '*Address:* ' + fullAddr + '\n' +
-      '*Project:* ' + (project||'—') + '\n\n' +
-      '*Rebar Requirement:*\n' + rebarText +
-      '\n*Delivery:* ' + (delivery||'—') + (reqby ? '  By: ' + reqby : '') +
-      (notes ? '\n*Notes:* ' + notes : '') +
-      '\n\n_SAIL CMO · sailsuraksha.com_';
-    window.open('https://wa.me/91' + waNum.slice(-10) + '?text=' + encodeURIComponent(waMsg), '_blank');
+    window.open('https://wa.me/91' + waNum.slice(-10) + '?text=' + encodeURIComponent(waForDealer), '_blank');
   }
 
-  // ─── 2. Email — always goes to ENQUIRY_EMAIL ────────
-  // Dealer email and distributor email added as CC when available
-  var dlrEmail  = d.email  || '';
-  var distObj   = DISTRIBUTOR_CONTACTS[cplCluster] || null;
-  var distEmail = distObj ? distObj.email : '';
+  // ─── 2. WhatsApp → DISTRIBUTOR ───────────────────────
+  if (dist && dist.phone) {
+    setTimeout(function(){
+      window.open('https://wa.me/91' + dist.phone.replace(/\D/g,'').slice(-10) + '?text=' + encodeURIComponent(waForDist), '_blank');
+    }, 900);
+  }
 
-  // Primary TO is always the master enquiry address
-  var to = ENQUIRY_EMAIL;
-  var ccList = [];
-  if (dlrEmail  && dlrEmail  !== ENQUIRY_EMAIL) ccList.push(dlrEmail);
-  if (distEmail && distEmail !== ENQUIRY_EMAIL && distEmail !== dlrEmail) ccList.push(distEmail);
+  // ─── 3. WhatsApp → RMO ───────────────────────────────
+  if (rmo && rmo.phone) {
+    setTimeout(function(){
+      window.open('https://wa.me/91' + rmo.phone.replace(/\D/g,'').slice(-10) + '?text=' + encodeURIComponent(waForRMO), '_blank');
+    }, 1800);
+  }
+
+  // ─── 4. EMAIL — To: RMO · CC: Dealer + Distributor ──
+  var dlrEmail  = d.email   || '';
+  var distEmail = dist ? (dist.email || '') : '';
+  var rmoEmail  = rmo  ? (rmo.email  || '') : ENQUIRY_EMAIL;
+
+  var toEmail = rmoEmail || ENQUIRY_EMAIL;
+  var ccList  = [];
+  if (dlrEmail  && dlrEmail  !== toEmail) ccList.push(dlrEmail);
+  if (distEmail && distEmail !== toEmail && distEmail !== dlrEmail) ccList.push(distEmail);
   var cc = ccList.join(',');
 
-  var subj = 'SAIL SeQR Enquiry [' + enqId + '] — ' + name + ' — ' + (d.name || 'Direct') + ' — ' + city;
-  var mailto = 'mailto:' + to +
+  var subj = 'SAIL SeQR Enquiry [' + enqId + '] — ' + name + ' — ' + (d.name||'Direct') + ' — ' + city;
+  var mailto = 'mailto:' + toEmail +
     (cc ? '?cc=' + encodeURIComponent(cc) : '?') +
     '&subject=' + encodeURIComponent(subj) +
     '&body=' + encodeURIComponent(msgBody);
-  window.open(mailto, '_blank');
+  setTimeout(function(){
+    window.open(mailto, '_blank');
+  }, 2700);
 
-  // ─── Log this enquiry for Reports section ───────────
+  // ─── Log enquiry ─────────────────────────────────────
   _logEnquiry({
     id: enqId,
     date: ts,
@@ -4109,37 +4171,28 @@ function submitDealerEnquiry() {
     dealer: d.name || null,
     source: d.name ? 'Dealer Card' : 'Buy TMT Direct',
     location: city,
-    summary: rebarText.split('\\n')[0] || '-',
+    summary: rebarText.split('\n')[0] || '-',
     status: 'Submitted'
   });
-
-  // ─── 3. WhatsApp to Distributor (if available) ─────
-  if (distObj && distObj.phone) {
-    var waDistMsg = '*Dealer Enquiry Received [' + enqId + ']*\n' +
-      'Dealer: *' + (d.name||'Direct') + '* [' + (d.district||'') + ']\n' +
-      'Customer: ' + name + '  📞 ' + mobile + '\n' +
-      'Location: ' + city + ', ' + pin + '\n' +
-      'Rebar:\n' + rebarText;
-    setTimeout(function(){
-      window.open('https://wa.me/91' + distObj.phone.slice(-10) + '?text=' + encodeURIComponent(waDistMsg), '_blank');
-    }, 800);
-  }
 
   // ─── 4. Success ──────────────────────────────────────
   setTimeout(function() {
     btn.disabled = false; btn.textContent = '📤 Send Enquiry →';
     closeModal('enquiry');
     var successHtml =
-      '<div style="text-align:center;padding:32px 20px">' +
-      '<div style="font-size:52px;margin-bottom:12px">✅</div>' +
-      '<div style="font-size:17px;font-weight:900;color:#0d1f3c;margin-bottom:8px">Enquiry Sent!</div>' +
-      '<div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:800;color:#16a34a;margin-bottom:14px">Enquiry ID: ' + enqId + '</div>' +
-      '<p style="font-size:13px;color:#64748b;line-height:1.9;margin-bottom:16px">' +
-        '✉ Email sent to <strong>' + ENQUIRY_EMAIL + '</strong>' +
-        (d.name ? '<br>📋 Dealer: <strong>' + d.name + '</strong>' : '') +
-        '<br>Our team will contact you within <strong>24 hours</strong>' +
-      '</p>' +
-      '<a href="tel:18001117475" style="display:block;text-align:center;font-weight:800;font-size:15px;color:#c0392b;text-decoration:none;margin-bottom:16px">📞 1800-11-7475 (Toll Free)</a>' +
+      '<div style="text-align:center;padding:28px 20px">' +
+      '<div style="font-size:48px;margin-bottom:10px">✅</div>' +
+      '<div style="font-size:17px;font-weight:900;color:#0d1f3c;margin-bottom:8px">Enquiry Sent Successfully!</div>' +
+      '<div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:800;color:#16a34a;margin-bottom:14px">Enquiry ID: ' + enqId + '</div>' +
+      '<div style="background:#f8fafc;border-radius:10px;padding:14px;margin-bottom:14px;text-align:left">' +
+      '<div style="font-size:10px;font-weight:800;color:#0d1f3c;letter-spacing:1px;margin-bottom:10px">NOTIFICATIONS SENT TO:</div>' +
+      (waNum && waNum.length >= 10 ? '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div style="background:#25D366;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">💬</div><div style="font-size:12px;color:#0d1f3c"><strong>Dealer WhatsApp:</strong> ' + (d.name||'—') + '</div></div>' : '') +
+      (dist && dist.phone ? '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div style="background:#25D366;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">💬</div><div style="font-size:12px;color:#0d1f3c"><strong>Distributor WhatsApp:</strong> ' + dist.name + '</div></div>' : '') +
+      (rmo && rmo.phone ? '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div style="background:#25D366;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">💬</div><div style="font-size:12px;color:#0d1f3c"><strong>RMO WhatsApp:</strong> ' + rmo.name + '</div></div>' : '') +
+      '<div style="display:flex;align-items:center;gap:8px"><div style="background:#0d1f3c;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">✉️</div><div style="font-size:12px;color:#0d1f3c"><strong>Email:</strong> RMO + Dealer + Distributor</div></div>' +
+      '</div>' +
+      '<p style="font-size:12px;color:#64748b;margin-bottom:12px">Our team will contact you within <strong>24 hours</strong> to confirm your requirement.</p>' +
+      '<a href="tel:18001117475" style="display:block;text-align:center;font-weight:800;font-size:14px;color:#c0392b;text-decoration:none;margin-bottom:14px">📞 1800-11-7475 (Toll Free)</a>' +
       '<button class="btn btn-y" style="width:100%;border-radius:8px;justify-content:center" onclick="if(window._enqSuccessClose)_enqSuccessClose();">Done</button>' +
       '</div>';
     com.scrollTop = 0;
