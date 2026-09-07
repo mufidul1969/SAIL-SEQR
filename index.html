@@ -411,7 +411,7 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
 <div id="page-buy" class="page">
   <section class="sec">
     <div class="wrap">
-      <div class="sec-head"><div class="lbl">Online Store</div><div class="h2">Buy SAIL SeQR TMT — August 2026 MRRP</div><p class="sub">SeQR Fe 550D · Per Piece Price (Incl. GST) · 12 Metre Standard Length · Location-wise MRRP</p></div>
+      <div class="sec-head"><div class="lbl">Online Store</div><div class="h2">Buy SAIL SeQR TMT — September 2026 MRRP</div><p class="sub">SeQR Fe 550D · Per Piece Price (Incl. GST) · 12 Metre Standard Length · Location-wise MRRP</p></div>
 
       <!-- Location Selector -->
       <div style="background:#fffde7;border:1.5px solid #f5d800;border-radius:10px;padding:18px 20px;margin-bottom:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
@@ -492,7 +492,7 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
           </table>
         </div>
         <div style="margin-top:14px;background:#fffde7;border-radius:8px;padding:13px 16px;font-size:12px;color:#64748b;line-height:1.7">
-          <strong style="color:#0d1f3c">📌 Notes:</strong> Prices are MRRP (Maximum Retail Price) inclusive of GST @18% · Valid for August 2026 · Standard length: 12 metres per piece · Prices are for stockyard sales · Actual billing price may vary as per applicable discounts &amp; schemes
+          <strong style="color:#0d1f3c">📌 Notes:</strong> Prices are MRRP (Maximum Retail Price) inclusive of GST @18% · Valid for September 2026 · Standard length: 12 metres per piece · Prices are for stockyard sales · Actual billing price may vary as per applicable discounts &amp; schemes
         </div>
       </div>
 
@@ -958,6 +958,14 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
           <div style="font-size:15px;font-weight:900;color:#0d1f3c;margin-bottom:6px">Bar Bending Schedule Guide <span style="color:#0a6ebd">↓</span></div>
           <p style="font-size:12px;color:#64748b;line-height:1.6;margin-bottom:10px">Quick-reference rebar sizing guide for residential construction — slabs, beams, columns &amp; footings.</p>
           <div style="font-size:11px;color:#94a3b8;font-weight:700">📄 PDF Download</div>
+        </div>
+
+        <!-- Offtake Report -->
+        <div class="report-card" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:20px;cursor:pointer;transition:.2s" onclick="showOfftakeReport()">
+          <div style="width:46px;height:46px;border-radius:10px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px">📊</div>
+          <div style="font-size:15px;font-weight:900;color:#0d1f3c;margin-bottom:6px">Distributor Offtake Report <span style="color:#16a34a">↓</span></div>
+          <p style="font-size:12px;color:#64748b;line-height:1.6;margin-bottom:10px">Clusterwise monthly offtake since inception — Darjeeling &amp; Jalpaiguri. Bar charts, pie chart &amp; detailed tables.</p>
+          <div style="font-size:11px;color:#94a3b8;font-weight:700">📊 Interactive Report · Charts + Tables</div>
         </div>
 
       </div>
@@ -4391,37 +4399,37 @@ buildProds();
 
 // ── LOCATION-WISE PRICING ──
 var PRICE_DATA = {
-  'Kolkata': [387, 590, 833, 1482, 2317, 3611, 5906],
-  'Durgapur': [387, 590, 833, 1482, 2317, 3611, 5906],
-  'Murshidabad': [387, 590, 833, 1482, 2317, 3611, 5906],
-  'Midnapore': [387, 590, 833, 1482, 2317, 3611, 5906],
-  'Darjeeling': [387, 590, 833, 1482, 2317, 3611, 5906],
-  'Jalpaiguri': [387, 590, 833, 1482, 2317, 3611, 5906],
-  'Howrah': [387, 590, 833, 1482, 2317, 3611, null],
-  'Nadia': [387, 590, 833, 1482, 2317, 3611, null],
-  'Hooghly': [387, 590, 833, 1482, 2317, 3611, 5906],
-  'Asansol': [387, 590, 833, 1482, 2317, 3611, 5906],
-  'Patna': [387, 590, 833, 1482, 2317, 3612, 5906],
-  'Muzaffarpur': [387, 590, 833, 1482, 2317, 3612, 5906],
-  'Bhagalpur': [387, 590, 833, 1482, 2317, 3612, 5906],
-  'Rohtas': [387, 590, 833, 1482, 2317, 3612, 5906],
-  'Ranchi': [387, 590, 833, 1482, 2317, 3612, 5906],
-  'Bokaro': [387, 590, 833, 1482, 2317, 3612, null],
-  'Dhanbad': [387, 590, 833, 1482, 2317, 3612, null],
-  'Cuttack': [385, 587, 829, 1476, 2307, 3596, null],
-  'Berhampur': [385, 587, 829, 1476, 2307, 3596, null],
-  'Bhubaneswar': [385, 587, 829, 1476, 2307, 3596, null],
-  'Rourkela': [385, 587, 829, 1476, 2307, 3596, null],
-  'Sundargarh': [385, 587, 829, 1476, 2307, 3596, null],
-  'Guwahati (Assam Districts)': [389, 592, 836, 1487, 2324, 3623, 5927],
-  'Guwahati (Meghalaya)': [389, 592, 833, 1483, 2318, 3613, 5906],
-  'Guwahati (Nagaland)': [396, 604, 850, 1512, 2364, 3685, 6026],
-  'Silchar (Assam Districts)': [389, 592, 836, 1487, 2324, 3623, 5927],
-  'Silchar (Tripura)': [398, 607, 857, 1524, 2383, 3715, 6076],
-  'Silchar (Mizoram)': [388, 591, 834, 1484, 2319, 3615, 5913],
-  'Silchar (Manipur)': [415, 633, 896, 1594, 2491, 3883, 6353],
-  'Upper Assam (Assam Districts)': [389, 592, 836, 1487, 2324, 3623, 5927],
-  'Upper Assam (Arunachal Pradesh)': [392, 598, 844, 1502, 2348, 3660, 5984],
+  'Kolkata': [396, 604, 854, 1520, 2376, 3704, 6117],
+  'Durgapur': [396, 604, 854, 1520, 2376, 3704, 6117],
+  'Murshidabad': [396, 604, 854, 1518, 2376, 3704, 6117],
+  'Midnapore': [396, 604, 854, 1520, 2376, 3704, 6117],
+  'Darjeeling': [396, 604, 854, 1520, 2376, 3704, 6117],
+  'Jalpaiguri': [396, 604, 854, 1520, 2376, 3704, 6117],
+  'Howrah': [396, 604, 854, 1520, 2376, 3704, null],
+  'Nadia': [396, 604, 854, 1520, 2376, 3704, null],
+  'Hooghly': [396, 604, 854, 1520, 2376, 3704, 6117],
+  'Asansol': [396, 604, 854, 1520, 2376, 3704, 6117],
+  'Patna': [396, 605, 854, 1520, 2377, 3704, 6117],
+  'Muzaffarpur': [396, 605, 854, 1520, 2377, 3704, 6117],
+  'Bhagalpur': [396, 605, 854, 1520, 2377, 3704, 6117],
+  'Rohtas': [396, 605, 854, 1520, 2377, 3704, 6117],
+  'Ranchi': [396, 605, 854, 1520, 2377, 3704, 6117],
+  'Bokaro': [396, 605, 854, 1520, 2377, 3704, null],
+  'Dhanbad': [396, 605, 854, 1520, 2377, 3704, null],
+  'Cuttack': [395, 602, 851, 1514, 2366, 3688, null],
+  'Berhampur': [395, 602, 851, 1514, 2366, 3688, null],
+  'Bhubaneswar': [395, 602, 851, 1514, 2366, 3688, null],
+  'Rourkela': [395, 602, 851, 1514, 2366, 3688, null],
+  'Sundargarh': [395, 602, 851, 1514, 2366, 3688, null],
+  'Guwahati (Assam Districts)': [398, 607, 857, 1525, 2384, 3715, 6135],
+  'Guwahati (Meghalaya)': [397, 605, 855, 1521, 2377, 3705, 6119],
+  'Guwahati (Nagaland)': [404, 616, 871, 1550, 2424, 3778, 6237],
+  'Silchar (Assam Districts)': [398, 607, 857, 1525, 2384, 3715, 6135],
+  'Silchar (Tripura)': [408, 622, 878, 1562, 2443, 3807, 6286],
+  'Silchar (Mizoram)': [397, 606, 855, 1521, 2378, 3707, 6122],
+  'Silchar (Manipur)': [424, 648, 917, 1632, 2551, 3976, 6562],
+  'Upper Assam (Assam Districts)': [398, 607, 857, 1525, 2384, 3715, 6135],
+  'Upper Assam (Arunachal Pradesh)': [402, 613, 865, 1540, 2407, 3752, 6195],
 };
 
 var SIZES_LIST = [8, 10, 12, 16, 20, 25, 32];
@@ -4440,7 +4448,7 @@ function onLocChange(loc) {
   }
   if (prompt) prompt.style.display = "none";
   if (section) section.style.display = "block";
-  if (badge) { badge.textContent = "August 2026 MRRP — " + loc; badge.style.display = "inline-block"; }
+  if (badge) { badge.textContent = "September 2026 MRRP — " + loc; badge.style.display = "inline-block"; }
   renderPriceTable(loc);
 }
 
@@ -5519,6 +5527,229 @@ function expSeekClick(e){var rect=e.currentTarget.getBoundingClientRect();expGoS
   </div>
 </div>
 
+
+
+<!-- ===== OFFTAKE REPORT MODAL ===== -->
+<div id="modal-offtake" class="modal-bg">
+  <div style="background:#fff;width:100%;max-width:860px;margin:auto;border-radius:14px;overflow:hidden;max-height:95vh;overflow-y:auto;position:relative">
+    <button onclick="closeModal('offtake')" style="position:sticky;top:10px;float:right;margin:10px 14px 0;z-index:10;background:rgba(0,0,0,.08);color:#374151;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;font-weight:800;cursor:pointer">✕</button>
+
+    <!-- Query Panel -->
+    <div style="background:linear-gradient(135deg,#0d1f3c,#1a3a6b);padding:22px 24px 20px">
+      <div style="font-size:10px;font-weight:800;color:#f5d800;letter-spacing:1.5px;margin-bottom:6px">📊 SAIL SeQR · DISTRIBUTOR OFFTAKE REPORT</div>
+      <div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:16px">Generate Clusterwise Report</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:10px;font-weight:800;color:rgba(255,255,255,.55);margin-bottom:5px">SELECT CLUSTER</div>
+          <select id="offtake-cluster-sel" style="border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;color:#0d1f3c;background:#fff;min-width:200px;cursor:pointer">
+            <option value="BOTH">Both Clusters (Combined)</option>
+            <option value="DARJEELING">Darjeeling Cluster</option>
+            <option value="JALPAIGURI">Jalpaiguri Cluster</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:800;color:rgba(255,255,255,.55);margin-bottom:5px">SELECT PERIOD</div>
+          <select id="offtake-period-sel" style="border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;color:#0d1f3c;background:#fff;min-width:200px;cursor:pointer">
+            <option value="ALL">Since Inception (All)</option>
+            <option value="FY2025">FY 2024-25 (Calendar 2025)</option>
+            <option value="FY2026">FY 2025-26 (Calendar 2026)</option>
+            <option value="Q1">Q1 Only (Jan-Mar)</option>
+            <option value="Q2">Q2 Only (Apr-Jun)</option>
+            <option value="Q3">Q3 Only (Jul-Sep)</option>
+            <option value="Q4">Q4 Only (Oct-Dec)</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:flex-end">
+          <button onclick="genOfftakeReport()" style="background:#f5d800;color:#0d1f3c;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:900;cursor:pointer">▶ Generate Report</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Output -->
+    <div id="offtake-report-output" style="padding:20px">
+      <div style="text-align:center;padding:48px 20px;color:#94a3b8">
+        <div style="font-size:48px;margin-bottom:12px">📊</div>
+        <div style="font-size:15px;font-weight:700;color:#374151;margin-bottom:6px">Select cluster and period above</div>
+        <div style="font-size:12px">Then click <strong>Generate Report</strong> to see charts and tables</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== OFFTAKE REPORT ENGINE (restored) ===== -->
+<script>
+var OFFTAKE_DATA = {
+  'DARJEELING': [
+    {m:'Jan-2025',mt:33.00},{m:'Feb-2025',mt:139.80},{m:'Mar-2025',mt:907.77},
+    {m:'Apr-2025',mt:1388.42},{m:'May-2025',mt:787.42},{m:'Jun-2025',mt:1095.52},
+    {m:'Jul-2025',mt:1246.36},{m:'Aug-2025',mt:263.16},{m:'Sep-2025',mt:1068.49},
+    {m:'Oct-2025',mt:92.91},{m:'Nov-2025',mt:1125.57},{m:'Dec-2025',mt:255.30},
+    {m:'Jan-2026',mt:1080.81},{m:'Feb-2026',mt:540.02},{m:'Mar-2026',mt:1037.98},
+    {m:'Apr-2026',mt:279.98},{m:'May-2026',mt:1120.32},{m:'Jun-2026',mt:189.65},
+    {m:'Jul-2026',mt:1035.10},{m:'Aug-2026',mt:0.00}
+  ],
+  'JALPAIGURI': [
+    {m:'Jul-2025',mt:634.46},{m:'Aug-2025',mt:1555.39},{m:'Sep-2025',mt:194.98},
+    {m:'Oct-2025',mt:1552.81},{m:'Nov-2025',mt:451.42},{m:'Dec-2025',mt:1603.11},
+    {m:'Jan-2026',mt:1041.36},{m:'Feb-2026',mt:1560.77},{m:'Mar-2026',mt:865.74},
+    {m:'Apr-2026',mt:1529.79},{m:'May-2026',mt:162.51},{m:'Jun-2026',mt:1539.21},
+    {m:'Jul-2026',mt:97.59},{m:'Aug-2026',mt:1254.85}
+  ]
+};
+
+function showOfftakeReport() {
+  if (typeof openModal === 'function') {
+    openModal('offtake');
+  } else {
+    var el = document.getElementById('modal-offtake');
+    if (el) el.classList.add('on');
+  }
+  // The global click-outside listener ran before this modal existed in the DOM,
+  // so attach one here (once) to match the portal's other modals.
+  var m = document.getElementById('modal-offtake');
+  if (m && !m.dataset.coBound) {
+    m.addEventListener('click', function(e){ if (e.target === m) m.classList.remove('on'); });
+    m.dataset.coBound = '1';
+  }
+}
+
+function genOfftakeReport() {
+  var selCluster = (document.getElementById('offtake-cluster-sel')||{}).value || 'BOTH';
+  var selPeriod  = (document.getElementById('offtake-period-sel')||{}).value || 'ALL';
+  var clusters = selCluster === 'BOTH' ? ['DARJEELING','JALPAIGURI'] : [selCluster];
+
+  function filterByPeriod(rows){
+    if (selPeriod === 'ALL') return rows;
+    if (selPeriod === 'FY2025') return rows.filter(function(r){ return r.m.indexOf('2025') >= 0; });
+    if (selPeriod === 'FY2026') return rows.filter(function(r){ return r.m.indexOf('2026') >= 0; });
+    if (selPeriod === 'Q1') return rows.filter(function(r){ return r.m.match(/Jan|Feb|Mar/); });
+    if (selPeriod === 'Q2') return rows.filter(function(r){ return r.m.match(/Apr|May|Jun/); });
+    if (selPeriod === 'Q3') return rows.filter(function(r){ return r.m.match(/Jul|Aug|Sep/); });
+    if (selPeriod === 'Q4') return rows.filter(function(r){ return r.m.match(/Oct|Nov|Dec/); });
+    return rows;
+  }
+
+  var datasets = {}, allMonths = {}, grandTotal = 0;
+  clusters.forEach(function(c){
+    var rows = filterByPeriod(OFFTAKE_DATA[c] || []);
+    datasets[c] = rows;
+    rows.forEach(function(r){ allMonths[r.m] = 1; grandTotal += r.mt; });
+  });
+
+  var order = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var months = Object.keys(allMonths).sort(function(a,b){
+    var ap=a.split('-'), bp=b.split('-');
+    if (ap[1]!==bp[1]) return parseInt(ap[1])-parseInt(bp[1]);
+    return order.indexOf(ap[0])-order.indexOf(bp[0]);
+  });
+
+  var chartW=560,chartH=220,padL=55,padB=35,padT=18,padR=15;
+  var plotW=chartW-padL-padR, plotH=chartH-padB-padT;
+  var maxVal=0;
+  months.forEach(function(m){ clusters.forEach(function(c){ var row=(datasets[c]||[]).find(function(r){return r.m===m;}); if(row&&row.mt>maxVal) maxVal=row.mt; }); });
+  maxVal = Math.ceil(maxVal/200)*200 || 1600;
+  var barW = Math.max(4, Math.floor((plotW/months.length)/(clusters.length+0.5)) - 6);
+  var colors = ['#0891B2','#F5A623'];
+
+  var bars='';
+  months.forEach(function(m,mi){
+    var x0 = padL + (mi/months.length)*plotW;
+    clusters.forEach(function(c,ci){
+      var row=(datasets[c]||[]).find(function(r){return r.m===m;});
+      var val=row?row.mt:0, bh=(val/maxVal)*plotH, bx=x0+ci*(barW+2), by=padT+plotH-bh;
+      bars += '<rect x="'+bx.toFixed(1)+'" y="'+by.toFixed(1)+'" width="'+barW+'" height="'+bh.toFixed(1)+'" fill="'+colors[ci]+'" rx="2" opacity=".85"><title>'+c+' '+m+': '+val.toFixed(1)+' MT</title></rect>';
+      if(val>0) bars += '<text x="'+(bx+barW/2).toFixed(1)+'" y="'+(by-2).toFixed(1)+'" text-anchor="middle" font-size="7" fill="#374151">'+(val>=100?val.toFixed(0):val.toFixed(1))+'</text>';
+    });
+    var lx = x0 + (clusters.length*(barW+2))/2;
+    bars += '<text x="'+lx.toFixed(1)+'" y="'+(chartH-8)+'" text-anchor="middle" font-size="8" fill="#64748b">'+m.replace('-20',"'")+'</text>';
+  });
+
+  var yGrid='';
+  for(var yi=0;yi<=4;yi++){
+    var yVal=(maxVal/4)*yi, yPos=padT+plotH-(yVal/maxVal)*plotH;
+    yGrid += '<line x1="'+padL+'" y1="'+yPos.toFixed(1)+'" x2="'+(chartW-padR)+'" y2="'+yPos.toFixed(1)+'" stroke="#e2e8f0" stroke-width="1"/>';
+    yGrid += '<text x="'+(padL-4)+'" y="'+(yPos+3).toFixed(1)+'" text-anchor="end" font-size="9" fill="#64748b">'+yVal.toFixed(0)+'</text>';
+  }
+  var svgChart = '<svg viewBox="0 0 '+chartW+' '+chartH+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:'+chartH+'px">'+yGrid+bars+
+    '<line x1="'+padL+'" y1="'+padT+'" x2="'+padL+'" y2="'+(padT+plotH)+'" stroke="#cbd5e1" stroke-width="1.5"/>'+
+    '<line x1="'+padL+'" y1="'+(padT+plotH)+'" x2="'+(chartW-padR)+'" y2="'+(padT+plotH)+'" stroke="#cbd5e1" stroke-width="1.5"/></svg>';
+
+  var pieSvg='';
+  if(selCluster==='BOTH'){
+    var totals={}; clusters.forEach(function(c){ totals[c]=(datasets[c]||[]).reduce(function(s,r){return s+r.mt;},0); });
+    var gt=0; clusters.forEach(function(c){ gt+=totals[c]; }); gt=gt||1;
+    var startAngle=-Math.PI/2, slices='';
+    clusters.forEach(function(c,ci){
+      var frac=totals[c]/gt, endAngle=startAngle+frac*2*Math.PI;
+      var x1=70+55*Math.cos(startAngle), y1=70+55*Math.sin(startAngle);
+      var x2=70+55*Math.cos(endAngle),   y2=70+55*Math.sin(endAngle);
+      var large=frac>0.5?1:0;
+      slices += '<path d="M70,70 L'+x1.toFixed(1)+','+y1.toFixed(1)+' A55,55 0 '+large+',1 '+x2.toFixed(1)+','+y2.toFixed(1)+' Z" fill="'+colors[ci]+'" opacity=".85"/>';
+      var midA=startAngle+frac*Math.PI, tx=70+35*Math.cos(midA), ty=70+35*Math.sin(midA);
+      slices += '<text x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">'+(frac*100).toFixed(1)+'%</text>';
+      startAngle=endAngle;
+    });
+    pieSvg='<svg viewBox="0 0 180 140" xmlns="http://www.w3.org/2000/svg" style="width:160px">'+slices+
+      clusters.map(function(c,ci){ return '<rect x="10" y="'+(105+ci*18)+'" width="12" height="12" fill="'+colors[ci]+'" rx="2"/><text x="26" y="'+(115+ci*18)+'" font-size="10" fill="#374151">'+c+': '+totals[c].toFixed(0)+' MT</text>'; }).join('')+'</svg>';
+  }
+
+  var tableRows = months.map(function(m){
+    var cells = clusters.map(function(c){
+      var row=(datasets[c]||[]).find(function(r){return r.m===m;}); var val=row?row.mt:0;
+      return '<td style="padding:7px 12px;text-align:right;font-weight:'+(val>1000?'800':'400')+';color:'+(val>1000?'#16a34a':val===0?'#94a3b8':'#0d1f3c')+'">'+(val>0?val.toFixed(2):'—')+'</td>';
+    });
+    var rowTotal = clusters.reduce(function(s,c){ var row=(datasets[c]||[]).find(function(r){return r.m===m;}); return s+(row?row.mt:0); },0);
+    return '<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:7px 12px;font-weight:700;color:#0d1f3c">'+m+'</td>'+cells.join('')+
+      (selCluster==='BOTH'?'<td style="padding:7px 12px;text-align:right;font-weight:800;color:#0d1f3c">'+rowTotal.toFixed(2)+'</td>':'')+'</tr>';
+  }).join('');
+  var clusterTotals = clusters.map(function(c){ return '<td style="padding:8px 12px;text-align:right;font-weight:900;color:#0d1f3c">'+(datasets[c]||[]).reduce(function(s,r){return s+r.mt;},0).toFixed(2)+' MT</td>'; });
+  var legend = clusters.map(function(c,i){ return '<span style="display:inline-flex;align-items:center;gap:5px;margin-right:14px"><span style="width:12px;height:12px;border-radius:2px;background:'+colors[i]+';display:inline-block"></span><span style="font-size:12px;font-weight:700;color:#374151">'+c+'</span></span>'; }).join('');
+  var periodLabel = {ALL:'Since Inception',FY2025:'FY 2024-25',FY2026:'FY 2025-26',Q1:'Q1 (Jan-Mar)',Q2:'Q2 (Apr-Jun)',Q3:'Q3 (Jul-Sep)',Q4:'Q4 (Oct-Dec)'}[selPeriod]||selPeriod;
+  var clusterLabel = selCluster==='BOTH'?'Darjeeling + Jalpaiguri Clusters':selCluster+' Cluster';
+
+  var html =
+    '<div style="background:linear-gradient(135deg,#0d1f3c,#1a3a6b);border-radius:12px;padding:20px 24px;margin-bottom:18px">'+
+      '<div style="font-size:10px;font-weight:800;color:#f5d800;letter-spacing:1.5px;margin-bottom:4px">SAIL SeQR TMT · DISTRIBUTOR OFFTAKE REPORT</div>'+
+      '<div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px">'+clusterLabel+'</div>'+
+      '<div style="font-size:12px;color:rgba(255,255,255,.65)">Period: '+periodLabel+' &nbsp;·&nbsp; Generated: '+new Date().toLocaleString('en-IN')+'</div>'+
+      '<div style="display:flex;gap:20px;margin-top:14px;flex-wrap:wrap">'+
+        '<div style="background:rgba(255,255,255,.08);border-radius:8px;padding:10px 16px;text-align:center"><div style="font-size:22px;font-weight:900;color:#f5d800">'+grandTotal.toFixed(2)+'</div><div style="font-size:10px;color:rgba(255,255,255,.55);font-weight:700">TOTAL MT</div></div>'+
+        '<div style="background:rgba(255,255,255,.08);border-radius:8px;padding:10px 16px;text-align:center"><div style="font-size:22px;font-weight:900;color:#f5d800">'+months.length+'</div><div style="font-size:10px;color:rgba(255,255,255,.55);font-weight:700">MONTHS</div></div>'+
+        '<div style="background:rgba(255,255,255,.08);border-radius:8px;padding:10px 16px;text-align:center"><div style="font-size:22px;font-weight:900;color:#f5d800">'+clusters.length+'</div><div style="font-size:10px;color:rgba(255,255,255,.55);font-weight:700">CLUSTERS</div></div>'+
+        (grandTotal>0?'<div style="background:rgba(255,255,255,.08);border-radius:8px;padding:10px 16px;text-align:center"><div style="font-size:22px;font-weight:900;color:#f5d800">'+(grandTotal/months.length).toFixed(0)+'</div><div style="font-size:10px;color:rgba(255,255,255,.55);font-weight:700">AVG MT/MONTH</div></div>':'')+
+      '</div></div>'+
+    '<div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:18px;margin-bottom:16px">'+
+      '<div style="font-size:12px;font-weight:800;color:#0d1f3c;margin-bottom:4px">Monthly Offtake — MT (Bar Chart)</div>'+
+      '<div style="font-size:11px;color:#64748b;margin-bottom:12px">'+legend+'</div>'+svgChart+'</div>'+
+    (selCluster==='BOTH'?
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">'+
+        '<div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font-size:12px;font-weight:800;color:#0d1f3c;margin-bottom:10px;align-self:flex-start">Cluster Share (Pie)</div>'+pieSvg+'</div>'+
+        '<div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:18px"><div style="font-size:12px;font-weight:800;color:#0d1f3c;margin-bottom:12px">Cluster Summary</div>'+
+        clusters.map(function(c,ci){
+          var cTotal=(datasets[c]||[]).reduce(function(s,r){return s+r.mt;},0);
+          var cActive=(datasets[c]||[]).filter(function(r){return r.mt>0;});
+          var cAvg=cTotal/(cActive.length||1);
+          var cMax=Math.max.apply(null,(datasets[c]||[]).map(function(r){return r.mt;}));
+          var cMaxM=((datasets[c]||[]).find(function(r){return r.mt===cMax;})||{}).m||'—';
+          return '<div style="border:1.5px solid '+colors[ci]+';border-radius:8px;padding:10px 14px;margin-bottom:10px"><div style="font-size:12px;font-weight:900;color:'+colors[ci]+';margin-bottom:6px">'+c+' CLUSTER</div><div style="font-size:11px;color:#374151;line-height:1.8">📦 Total Offtake: <strong>'+cTotal.toFixed(2)+' MT</strong><br>📅 Months Active: <strong>'+cActive.length+'</strong><br>📈 Avg/Month: <strong>'+cAvg.toFixed(1)+' MT</strong><br>🏆 Best Month: <strong>'+cMaxM+' ('+cMax.toFixed(0)+' MT)</strong></div></div>';
+        }).join('')+'</div></div>':'')+
+    '<div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:16px">'+
+      '<div style="background:#0d1f3c;padding:12px 16px"><div style="font-size:12px;font-weight:800;color:#f5d800">Month-wise Offtake Detail (MT)</div></div>'+
+      '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><thead><tr style="background:#f8fafc">'+
+      '<th style="padding:8px 12px;text-align:left;font-size:11px;font-weight:800;color:#0d1f3c">Month</th>'+
+      clusters.map(function(c,i){ return '<th style="padding:8px 12px;text-align:right;font-size:11px;font-weight:800;color:'+colors[i]+'">'+c+' (MT)</th>'; }).join('')+
+      (selCluster==='BOTH'?'<th style="padding:8px 12px;text-align:right;font-size:11px;font-weight:800;color:#0d1f3c">TOTAL</th>':'')+
+      '</tr></thead><tbody>'+tableRows+
+      '<tr style="background:#f5d800"><td style="padding:8px 12px;font-weight:900;color:#0d1f3c">TOTAL</td>'+clusterTotals.join('')+
+      (selCluster==='BOTH'?'<td style="padding:8px 12px;text-align:right;font-weight:900;color:#0d1f3c">'+grandTotal.toFixed(2)+' MT</td>':'')+
+      '</tr></tbody></table></div></div>'+
+    '<div style="font-size:10px;color:#94a3b8;text-align:right">Source: Distributor Offtake Records · SAIL CMO · BDO Siliguri</div>';
+
+  var out = document.getElementById('offtake-report-output');
+  if (out) out.innerHTML = html;
+}
+</script>
 
 </body>
 </html>
