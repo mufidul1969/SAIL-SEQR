@@ -309,7 +309,7 @@ footer{background:#0d1f3c;color:#fff;padding:44px 0 0}
     <div class="chip"    id="chip-guide"   onclick="showPage('guide')">📖 Bldg Guide</div>
     <div class="chip"                      onclick="openModal('partner')">🤝 Become Partner</div>
     <div class="chip"    id="chip-promo"   onclick="showPage('promo')">🎁 Offers</div>
-    <div class="chip"    id="chip-promats" onclick="showPage('promats')">📂 Promo Materials</div>
+    <div class="chip"    id="chip-promats" onclick="showPage('promats')">📂 Promotional Materials</div>
     <div class="chip"    id="chip-reports" onclick="showPage('reports')">📊 Reports</div>
     <div class="chip"    id="chip-antifr"  onclick="showPage('antifr')">🛡️ Verify Genuine</div>
   </div>
@@ -4763,7 +4763,6 @@ var _proAdminVisible = false;
 var PROMAT_DEFAULTS = {
   brochures: [
     { title:'SAIL SeQR TMT Bars — Official Brochure', desc:'Ab Nischint Ho Jayein · Product features, technical specs, chemical & mechanical properties, sizes & contact details', icon:'📄', url:'#', id:'default-b0' },
-    { title:'SAIL SeQR Product Catalogue 2022', desc:'Complete Fe 550D technical specifications, unique product attributes & plant details', icon:'📋', url:'https://drive.google.com/file/d/1-XZnTaG__SwXuEbc8vFteGR-Ksx-VQZQ/view?usp=drive_link', id:'default-b1' },
     { title:'SeQR Grade Comparison Guide', desc:'Fe 500 vs Fe 500D vs Fe 550D — which to choose?', icon:'📊', url:'#', id:'default-b2' },
   ],
   leaflets: [
@@ -4791,10 +4790,16 @@ var PROMAT_DEFAULTS = {
       url: 'https://drive.google.com/file/d/1eS1dVWsKknJj4KwkKKeWLDCjXqI9pOJl/view?usp=sharing',
       id: 'default-bn2'
     },
+    {
+      title: 'SAIL SeQR Product Catalogue 2022',
+      desc: 'Complete Fe 550D technical specifications, unique product attributes & plant details.',
+      url: 'https://drive.google.com/file/d/1-XZnTaG__SwXuEbc8vFteGR-Ksx-VQZQ/view?usp=drive_link',
+      id: 'default-bn3'
+    },
   ]
 };
 
-var PROMAT_VERSION = '9';  // bump this to clear cached data
+var PROMAT_VERSION = '10';  // bump this to clear cached data
 
 function _getPromats() {
   try {
