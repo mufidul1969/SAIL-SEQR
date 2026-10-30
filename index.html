@@ -6837,7 +6837,7 @@ var HERO_SLIDES = [
    trust:['600°C Fire Resistant','WRI Certified Weldable','Corrosion Resistant']},
   {eye:'📍 PAN India Network',
    h1:'Partners Across <span style="color:#f5d800">Every State</span>',
-   p:'70+ Distributors, 500+ Dealers, 1000+ ASOs across 4 regions. Find your nearest authorised partner.',
+   p:'89+ Distributors, 5200+ Dealers, 1000+ ASOs across 4 regions. Find your nearest authorised partner.',
    b1:'📍 Locate Dealer',b1p:'channel',b2:'🤝 Become Partner',b2p:'partner',
    trust:['North · East · West · South','70 Clusters','1.1 Lakh MT Committed']},
   {eye:'🏗️ Complete Home Building Partner',
@@ -7972,7 +7972,10 @@ function openBuyEnquiry(size, price, plant, location) {
   openModal('enquiry');
 }
 
-// Find dealer by PIN code — searches ALL clusters
+// PIN (first 3 digits) -> district/cluster resolver for nearest-dealer lookup
+var PIN_PREFIX_MAP = {'495':['BILASPUR'], '110':["NEW DELHI"], '121':["FARIDABAD"], '125':["SIRSA"], '131':["SONIPAT"], '140':["FATEHGARH SAHIB"], '141':["LUDHIANA"], '142':["LUDHIANA"], '160':["CHANDIGARH"], '201':["GHAZIABAD"], '208':["KANPUR NAGAR"], '211':["ALLAHABAD"], '212':["ALLAHABAD"], '282':["AGRA"], '302':["JAIPUR"], '303':["JAIPUR"], '324':["KOTA"], '325':["KOTA"], '380':["AHMEDABAD"], '382':["AHMEDABAD"], '390':["VADODARA"], '391':["VADODARA"], '402':["RAIGAD"], '410':["RAIGAD"], '440':["NAGPUR"], '441':["NAGPUR"], '452':["INDORE"], '453':["INDORE"], '490':["DURG"], '491':["DURG"], '492':["RAIPUR"], '493':["RAIPUR"], '500':["MEDCHAL-MALKAJGIRI"], '501':["MEDCHAL-MALKAJGIRI"], '504':["ADILABAD"], '561':["BANGALORE RURAL"], '562':["BANGALORE RURAL"], '600':["CHENNAI"], '601':["THIRUVALLUR"], '602':["THIRUVALLUR"], '620':["TIRUCHIRAPPALLI"], '621':["TIRUCHIRAPPALLI"], '641':["COIMBATORE"], '642':["COIMBATORE"], '682':["ERNAKULAM"], '683':["ERNAKULAM"], '712':["HOOGHLY"], '713':["DURGAPUR", "PASCHIM BARDHAMAN"], '721':["WEST MIDNAPORE"], '734':["DARJEELING"], '735':["JALPAIGURI"], '751':["KHORDHA"], '752':["KHORDHA"], '753':["CUTTACK"], '754':["CUTTACK"], '760':["GANJAM"], '761':["GANJAM"], '769':["SUNDARGARH"], '770':["SUNDARGARH"], '781':["KAMRUP", "KAMRUP METROPOLITAN"], '785':["JORHAT"], '788':["CACHAR"], '800':["PATNA"], '801':["PATNA"], '804':["PATNA"], '812':["BHAGALPUR"], '813':["BHAGALPUR"], '821':["ROHTAS"], '827':["BOKARO"], '834':["RANCHI"], '835':["RANCHI"], '842':["MUZAFFARPUR"], '843':["MUZAFFARPUR"]};
+
+// Find dealer by PIN code — resolves PIN to district, shows that area's dealers
 function findDealerByPin(pin) {
   var result = document.getElementById('enq-pin-result');
   if (!result) return;
@@ -7982,50 +7985,48 @@ function findDealerByPin(pin) {
     return;
   }
 
-  // Search all clusters in DEALER_DATA
+  // 1) First try an exact PIN match (for the few dealers that carry a real PIN)
   var matches = [];
   var clusterKeys = Object.keys(DEALER_DATA);
   for (var c = 0; c < clusterKeys.length; c++) {
-    var cluster = clusterKeys[c];
-    var dealers = DEALER_DATA[cluster] || [];
+    var dealers = DEALER_DATA[clusterKeys[c]] || [];
     for (var d = 0; d < dealers.length; d++) {
-      if ((dealers[d].pin || '').trim() === pin) {
-        matches.push({ dealer: dealers[d], cluster: cluster });
+      if ((dealers[d].pin || '').trim() === pin) matches.push({ dealer: dealers[d], cluster: clusterKeys[c] });
+    }
+  }
+
+  // 2) Otherwise resolve the PIN's postal district (first 3 digits) to our cluster(s)
+  var areaClusters = null;
+  if (matches.length === 0) {
+    var prefix = pin.substring(0, 3);
+    areaClusters = (typeof PIN_PREFIX_MAP !== 'undefined' && PIN_PREFIX_MAP[prefix]) ? PIN_PREFIX_MAP[prefix] : null;
+    if (areaClusters) {
+      for (var a = 0; a < areaClusters.length; a++) {
+        var ad = DEALER_DATA[areaClusters[a]] || [];
+        for (var j = 0; j < ad.length && matches.length < 8; j++) {
+          matches.push({ dealer: ad[j], cluster: areaClusters[a] });
+        }
       }
     }
   }
 
   if (matches.length === 0) {
-    // Try nearby PINs (same first 3 digits = same postal division)
-    var prefix = pin.substring(0, 3);
-    for (var c = 0; c < clusterKeys.length; c++) {
-      var cluster = clusterKeys[c];
-      var dealers = DEALER_DATA[cluster] || [];
-      for (var d = 0; d < dealers.length; d++) {
-        var dpin = (dealers[d].pin || '').trim();
-        if (dpin.startsWith(prefix)) {
-          matches.push({ dealer: dealers[d], cluster: cluster });
-        }
-      }
-    }
-    if (matches.length > 0) {
-      result.innerHTML = '<div style="font-size:11px;color:#92400e;margin-bottom:8px">⚠ No dealer found for PIN ' + pin + '. Showing nearest dealers in the same area:</div>' + _renderDealerOptions(matches.slice(0, 5), pin);
-    } else {
-      result.innerHTML =
-        '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 12px;font-size:12px;color:#dc2626">' +
-        '❌ No authorised dealer found near PIN ' + pin + '.<br>' +
-        '<span style="font-weight:800">Call Toll Free: 1800-11-7475</span> to find your nearest dealer.' +
-        '</div>';
-    }
+    result.innerHTML =
+      '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 12px;font-size:12px;color:#dc2626">' +
+      '❌ No authorised dealer found for PIN ' + pin + ' in our current network.<br>' +
+      '<span style="font-weight:800">Call Toll Free: 1800-11-7475</span> to find your nearest dealer.' +
+      '</div>';
     return;
   }
 
   if (matches.length === 1) {
-    // Auto-select single match
     _selectDealerForEnquiry(matches[0].dealer, matches[0].cluster);
   } else {
-    // Show list to choose from
-    result.innerHTML = '<div style="font-size:11px;color:#166534;font-weight:700;margin-bottom:8px">✅ ' + matches.length + ' authorised dealer(s) found near PIN ' + pin + '. Select one:</div>' + _renderDealerOptions(matches, pin);
+    var area = areaClusters ? areaClusters.map(function(x){ return x.charAt(0) + x.slice(1).toLowerCase(); }).join(' / ') : '';
+    var head = areaClusters
+      ? '<div style="font-size:11px;color:#166534;font-weight:700;margin-bottom:8px">✅ ' + matches.length + ' authorised dealer(s) near PIN ' + pin + (area ? ' (' + area + ')' : '') + '. Select one:</div>'
+      : '<div style="font-size:11px;color:#166534;font-weight:700;margin-bottom:8px">✅ ' + matches.length + ' authorised dealer(s) found for PIN ' + pin + '. Select one:</div>';
+    result.innerHTML = head + _renderDealerOptions(matches, pin);
   }
 }
 
@@ -8035,7 +8036,7 @@ function _renderDealerOptions(matches, pin) {
     return '<div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:8px;padding:10px 12px;margin-bottom:8px;cursor:pointer" ' +
       'onclick="_selectDealerForEnquiry(window._dealerMatches[' + i + '].dealer, window._dealerMatches[' + i + '].cluster)">' +
       '<div style="font-size:12.5px;font-weight:800;color:#0d1f3c">' + m.dealer.name + '</div>' +
-      '<div style="font-size:11px;color:#64748b;margin-top:2px">' + m.dealer.address + ' — PIN ' + m.dealer.pin + '</div>' +
+      '<div style="font-size:11px;color:#64748b;margin-top:2px">' + m.dealer.address + (m.dealer.pin ? ' — PIN ' + m.dealer.pin : '') + '</div>' +
       '<div style="font-size:11px;color:#16a34a;margin-top:3px;font-weight:700">📞 ' + m.dealer.phone + (m.dealer.district ? '  ·  ' + m.dealer.district : '') + '</div>' +
       '<div style="font-size:10px;color:#0891b2;margin-top:3px">Tap to select this dealer →</div>' +
       '</div>';
@@ -8053,7 +8054,7 @@ function _selectDealerForEnquiry(dealer, cluster) {
   var em   = document.getElementById('enq-dlr-email-display');
   var dist = document.getElementById('enq-dist-display');
   if (nm)   nm.textContent   = dealer.name + ' — Authorised Dealer';
-  if (addr) addr.textContent = dealer.address + ', ' + dealer.district + ' — PIN ' + dealer.pin;
+  if (addr) addr.textContent = dealer.address + ', ' + dealer.district + (dealer.pin ? ' — PIN ' + dealer.pin : '');
   if (ph)   ph.textContent   = '📞 ' + dealer.phone;
   if (em)   em.textContent   = dealer.email ? '✉ ' + dealer.email : '';
   var ctx = window._buyEnqContext || {};
@@ -8066,7 +8067,7 @@ function _selectDealerForEnquiry(dealer, cluster) {
     strip.innerHTML =
       '<div style="font-size:12px;font-weight:800;color:#166534;margin-bottom:4px">✅ Dealer Selected — Enquiry will be sent to:</div>' +
       '<div style="font-size:13px;font-weight:900;color:#0d1f3c">' + dealer.name + '</div>' +
-      '<div style="font-size:11px;color:#64748b">' + dealer.address + ' — PIN ' + dealer.pin + '</div>' +
+      '<div style="font-size:11px;color:#64748b">' + dealer.address + (dealer.pin ? ' — PIN ' + dealer.pin : '') + '</div>' +
       '<div style="font-size:12px;font-weight:700;color:#16a34a;margin-top:4px">📞 ' + dealer.phone + '</div>' +
       '<div style="font-size:10px;color:#0891b2;margin-top:5px">Enquiry will also go to Distributor + RMO · <a href="#" onclick="findDealerByPin(\'\');return false;" style="color:#0891b2">Change dealer</a></div>';
   }
